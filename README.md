@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+add few new strings for Readme to try pull Requests
 
 ## Available Scripts
 
