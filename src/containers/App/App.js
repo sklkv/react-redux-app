@@ -19,10 +19,13 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 
-import { Route, Link } from 'react-router-dom';
 import Home from '../Home';
 import About from '../About';
 import SingIn from '../SingIn';
+import { connect } from 'react-redux';
+import { Route, Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { changeStateNavigation } from '../../modules/navigation';
 
 const drawerWidth = 240;
 
@@ -103,112 +106,112 @@ const styles = theme => ({
   },
 });
 
-class App extends React.Component {
-  state = {
-    open: false,
-  };
-
-  handleDrawerOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleDrawerClose = () => {
-    this.setState({ open: false });
-  };
-
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <div className={classes.root}>
-        <CssBaseline />
-        <AppBar
-          position="absolute"
-          className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
-          // className={`appBar ${this.state.open && 'appBarShift'}`}
-        >
-          <Toolbar disableGutters={!this.state.open} className={classes.toolbar}>
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={this.handleDrawerOpen}
-              className={classNames(
-                classes.menuButton,
-                this.state.open && classes.menuButtonHidden,
-              )}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              className={classes.title}
-            >
-              Dashboard
+const App = props => {
+  const { classes } = props;
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar
+        position="absolute"
+        className={classNames(classes.appBar, props.openNavigation && classes.appBarShift)}
+      // className={`appBar ${this.props.openNavigation && 'appBarShift'}`}
+      >
+        <Toolbar disableGutters={!props.openNavigation} className={classes.toolbar}>
+          <IconButton
+            color="inherit"
+            aria-label="Open drawer"
+            onClick={props.changeStateNavigation}
+            className={classNames(
+              classes.menuButton,
+              props.openNavigation && classes.menuButtonHidden,
+            )}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            component="h1"
+            variant="h6"
+            color="inherit"
+            noWrap
+            className={classes.title}
+          >
+            Dashboard
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <Drawer
-          variant="permanent"
-          classes={{
-            paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
-          }}
-          open={this.state.open}
-        >
-          <div className={classes.toolbarIcon}>
-            <IconButton onClick={this.handleDrawerClose}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </div>
-          <Divider />
-          <List>
-            <Link to='/'>
-              <ListItem button>
-                <ListItemIcon>
-                  <DashboardIcon />
-                </ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-            </Link>
-            <Link to='/about-us'>
-              <ListItem button>
-                <ListItemIcon>
-                  <DashboardIcon />
-                </ListItemIcon>
-                <ListItemText primary="About" />
-              </ListItem>
-            </Link>
-            <Link to='/sing-in'>
-              <ListItem button>
-                <ListItemIcon>
-                  <DashboardIcon />
-                </ListItemIcon>
-                <ListItemText primary="Sing" />
-              </ListItem>
-            </Link>
-          </List>
-          <Divider />
-        </Drawer>
-        <main className={classes.content}>
-          <div className={classes.appBarSpacer} />
-          <Route exact path='/' component={Home} />
-          <Route exact path='/about-us' component={About} />
-          <Route exact path='/sing-in' component={SingIn} />
-        </main>
-      </div>
-    );
-  }
+          <IconButton color="inherit">
+            <Badge badgeContent={4} color="secondary">
+              <NotificationsIcon />
+            </Badge>
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        variant="permanent"
+        classes={{
+          paper: classNames(classes.drawerPaper, !props.openNavigation && classes.drawerPaperClose),
+        }}
+        open={props.openNavigation}
+      >
+        <div className={classes.toolbarIcon}>
+          <IconButton onClick={props.changeStateNavigation}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </div>
+        <Divider />
+        <List>
+          <Link to='/'>
+            <ListItem button>
+              <ListItemIcon>
+                <DashboardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Home" />
+            </ListItem>
+          </Link>
+          <Link to='/about-us'>
+            <ListItem button>
+              <ListItemIcon>
+                <DashboardIcon />
+              </ListItemIcon>
+              <ListItemText primary="About" />
+            </ListItem>
+          </Link>
+          <Link to='/sing-in'>
+            <ListItem button>
+              <ListItemIcon>
+                <DashboardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Sing" />
+            </ListItem>
+          </Link>
+        </List>
+        <Divider />
+      </Drawer>
+      <main className={classes.content}>
+        <div className={classes.appBarSpacer} />
+        <Route exact path='/' component={Home} />
+        <Route exact path='/about-us' component={About} />
+        <Route exact path='/sing-in' component={SingIn} />
+      </main>
+    </div>
+  );
 }
 
 App.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(App);
+const mapStateToProps = ({ navigation }) => ({
+  openNavigation: navigation.openNavigation,
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      changeStateNavigation: changeStateNavigation,
+    },
+    dispatch,
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withStyles(styles)(App));
