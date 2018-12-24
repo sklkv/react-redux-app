@@ -14,15 +14,9 @@ import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-
-import { Route, Link } from 'react-router-dom';
-import Home from '../Home';
-import About from '../About';
-import SingIn from '../SingIn';
+import { mainListItems, secondaryListItems } from './listItems';
+import SimpleLineChart from './SimpleLineChart';
+import SimpleTable from './SimpleTable';
 
 const drawerWidth = 240;
 
@@ -103,9 +97,9 @@ const styles = theme => ({
   },
 });
 
-class App extends React.Component {
+class Dashboard extends React.Component {
   state = {
-    open: false,
+    open: true,
   };
 
   handleDrawerOpen = () => {
@@ -125,7 +119,6 @@ class App extends React.Component {
         <AppBar
           position="absolute"
           className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
-          // className={`appBar ${this.state.open && 'appBarShift'}`}
         >
           <Toolbar disableGutters={!this.state.open} className={classes.toolbar}>
             <IconButton
@@ -168,47 +161,66 @@ class App extends React.Component {
             </IconButton>
           </div>
           <Divider />
-          <List>
-            <Link to='/'>
-              <ListItem button>
-                <ListItemIcon>
-                  <DashboardIcon />
-                </ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-            </Link>
-            <Link to='/about-us'>
-              <ListItem button>
-                <ListItemIcon>
-                  <DashboardIcon />
-                </ListItemIcon>
-                <ListItemText primary="About" />
-              </ListItem>
-            </Link>
-            <Link to='/sing-in'>
-              <ListItem button>
-                <ListItemIcon>
-                  <DashboardIcon />
-                </ListItemIcon>
-                <ListItemText primary="Sing" />
-              </ListItem>
-            </Link>
-          </List>
+          <List>export const mainListItems = (
+  <div>
+    <ListItem button>
+      <ListItemIcon>
+        <DashboardIcon />
+      </ListItemIcon>
+      <ListItemText primary="Dashboard" />
+    </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <ShoppingCartIcon />
+      </ListItemIcon>
+      <ListItemText primary="Orders" />
+    </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <PeopleIcon />
+      </ListItemIcon>
+      <ListItemText primary="Customers" />
+    </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <BarChartIcon />
+      </ListItemIcon>
+      <ListItemText primary="Reports" />
+    </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <LayersIcon />
+      </ListItemIcon>
+      <ListItemText primary="Integrations" />
+    </ListItem>
+  </div>
+);
+</List>
           <Divider />
+          <List>{secondaryListItems}</List>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
-          <Route exact path='/' component={Home} />
-          <Route exact path='/about-us' component={About} />
-          <Route exact path='/sing-in' component={SingIn} />
+          <Typography variant="h4" gutterBottom component="h2">
+            Orders
+          </Typography>
+          <Typography component="div" className={classes.chartContainer}>
+            <SimpleLineChart />
+          </Typography>
+          <Typography variant="h4" gutterBottom component="h2">
+            Products
+          </Typography>
+          <div className={classes.tableContainer}>
+            <SimpleTable />
+          </div>
         </main>
       </div>
     );
   }
 }
 
-App.propTypes = {
+Dashboard.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(App);
+export default withStyles(styles)(Dashboard);
