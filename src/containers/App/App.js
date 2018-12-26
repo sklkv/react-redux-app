@@ -23,7 +23,7 @@ import Home from '../Home';
 import About from '../About';
 import SingIn from '../SingIn';
 import { connect } from 'react-redux';
-import { Route, Link } from 'react-router-dom';
+import { Route, Link,withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { changeStateNavigation } from '../../modules/navigation';
 
@@ -114,7 +114,6 @@ const App = props => {
       <AppBar
         position="absolute"
         className={classNames(classes.appBar, props.openNavigation && classes.appBarShift)}
-      // className={`appBar ${this.props.openNavigation && 'appBarShift'}`}
       >
         <Toolbar disableGutters={!props.openNavigation} className={classes.toolbar}>
           <IconButton
@@ -211,7 +210,4 @@ const mapDispatchToProps = dispatch =>
     dispatch,
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withStyles(styles)(App));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(App)))
