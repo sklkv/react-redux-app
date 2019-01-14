@@ -22,8 +22,9 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import Home from '../Home';
 import About from '../About';
 import SingIn from '../SingIn';
+import Content from '../Content';
 import { connect } from 'react-redux';
-import { Route, Link,withRouter } from 'react-router-dom';
+import { Route, Link, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { changeStateNavigation } from '../../modules/navigation';
 
@@ -111,40 +112,28 @@ const App = props => {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar
-        position="absolute"
-        className={classNames(classes.appBar, props.openNavigation && classes.appBarShift)}
-      >
+      <AppBar position='absolute' className={classNames(classes.appBar, props.openNavigation && classes.appBarShift)}>
         <Toolbar disableGutters={!props.openNavigation} className={classes.toolbar}>
           <IconButton
-            color="inherit"
-            aria-label="Open drawer"
+            color='inherit'
+            aria-label='Open drawer'
             onClick={props.changeStateNavigation}
-            className={classNames(
-              classes.menuButton,
-              props.openNavigation && classes.menuButtonHidden,
-            )}
+            className={classNames(classes.menuButton, props.openNavigation && classes.menuButtonHidden)}
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            component="h1"
-            variant="h6"
-            color="inherit"
-            noWrap
-            className={classes.title}
-          >
+          <Typography component='h1' variant='h6' color='inherit' noWrap className={classes.title}>
             Dashboard
-            </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
+          </Typography>
+          <IconButton color='inherit'>
+            <Badge badgeContent={4} color='secondary'>
               <NotificationsIcon />
             </Badge>
           </IconButton>
         </Toolbar>
       </AppBar>
       <Drawer
-        variant="permanent"
+        variant='permanent'
         classes={{
           paper: classNames(classes.drawerPaper, !props.openNavigation && classes.drawerPaperClose),
         }}
@@ -162,7 +151,7 @@ const App = props => {
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
-              <ListItemText primary="Home" />
+              <ListItemText primary='Home' />
             </ListItem>
           </Link>
           <Link to='/about-us'>
@@ -170,7 +159,7 @@ const App = props => {
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
-              <ListItemText primary="About" />
+              <ListItemText primary='About' />
             </ListItem>
           </Link>
           <Link to='/sing-in'>
@@ -178,7 +167,15 @@ const App = props => {
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
-              <ListItemText primary="Sing" />
+              <ListItemText primary='Sing' />
+            </ListItem>
+          </Link>
+          <Link to='/content'>
+            <ListItem button>
+              <ListItemIcon>
+                <DashboardIcon />
+              </ListItemIcon>
+              <ListItemText primary='Content' />
             </ListItem>
           </Link>
         </List>
@@ -189,10 +186,11 @@ const App = props => {
         <Route exact path='/' component={Home} />
         <Route exact path='/about-us' component={About} />
         <Route exact path='/sing-in' component={SingIn} />
+        <Route exact path='/content' component={Content} />
       </main>
     </div>
   );
-}
+};
 
 App.propTypes = {
   classes: PropTypes.object.isRequired,
@@ -210,4 +208,9 @@ const mapDispatchToProps = dispatch =>
     dispatch,
   );
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(App)))
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(withStyles(styles)(App)),
+);
